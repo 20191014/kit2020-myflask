@@ -20,7 +20,7 @@ def input_num(num):
     elif num == 2:
         return "노진구"
     elif num == 3:
-        return "jaian"
+        return "퉁퉁이"
     else:
         return "nothing"    
     
@@ -85,6 +85,6 @@ def img():
     return render_template("image.html")
             
 if __name__ == '__main__': 
-    with app.test_request_context():
-        print(url_for('daum'))
+    # with app.test_request_context():
+    #     print(url_for('daum'))
     app.run(debug=false)
