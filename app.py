@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, abort
+from flask import Flask, request, render_template, redirect, url_for, abort, session
 
 import game
 import json
@@ -7,9 +7,11 @@ import dbdb
 
 app = Flask(__name__) 
 
+app.secret_key = b'aaa!111/'
+
 @app.route('/') 
 def index(): 
-    return 'mainpage!' 
+    return render_template('main.html') 
 
 @app.route('/hello/') 
 def hello(): 
@@ -57,10 +59,40 @@ def login():
         print (pw, type(pw))
         # id와 pw가 db 값이랑 비교 해서 맞 맞 틀 틀.
         ret = dbdb.select_user(id, pw)
+        print(ret)
         if ret != None:
-            return "hi {}".format(id)
+            session['user'] = id
+            return redirect(url_for('index'))
         else:
-            return "check u r id or pw"    
+            return redirect(url_for('login'))   
+
+@app.route('/logout') 
+def logout(): 
+    session.pop('user', None) 
+    return redirect(url_for('index'))           
+
+# register
+@app.route('/join', methods=['GET','POST']) 
+def join(): 
+    if request.method == 'GET':
+        return render_template('join.html') 
+    else:
+        id = request.form['id']
+        pw = request.form['pw']
+        name = request.form['pw']
+        print (id, type(id))
+        print (pw, type(pw))
+        ret = dbdb.check_id(id)
+        if ret != None:
+            return '''
+                    <script>
+                    alert('다른 아이디를 사용하세요');
+                    location.href='/join';
+                    </script>
+                    '''
+        # id와 pw가 db 값이랑 비교 해서 맞 맞 틀 틀.
+        dbdb.insert_user(id, pw, name)
+        return redirect(url_for('login'))
 
 @app.route('/form') 
 def form(): 
@@ -79,32 +111,12 @@ def method():
 
 @app.route('/getinfo') 
 def getinfo(): 
-    ret = dbdb.select_all()
-    print(ret[3])
-    return render_template('getinfo.html', data=ret)
-    # return '번호 : {}, 이름 : {}'.format(ret[0], ret[1])
-
-@app.route('/naver') 
-def naver():
-    return redirect("https://www.naver.com/")   
-#    return render_template("naver.html") 
-  
-@app.route('/kakao') 
-def daum(): 
-    return redirect("https://www.daum.net/")     
-
-@app.route('/urltest') 
-def url_test(): 
-    return redirect(url_for('naver'))    
-
-@app.route('/move/<site>') 
-def move_site(site): 
-    if site == 'naver':
-        return redirect(url_for('naver'))        
-    elif site == 'daum':     
-        return redirect(url_for('daum'))
-    else:
-        abort(404)
+    if 'user' in session:
+        ret = dbdb.select_all()
+        print(ret[3])
+        return render_template('getinfo.html', data=ret)
+        
+    return redirect(url_for('login'))
 
 @app.errorhandler(404)
 def page_not_found(error):

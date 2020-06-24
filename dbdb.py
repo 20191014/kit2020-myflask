@@ -72,7 +72,21 @@ def select_user(id, pw):
         print('db error:', e)
     finally:
         db.close()
-    return ret           
+    return ret 
+
+def check_id(id):
+    ret = ()
+    try:
+        db = dbcon()
+        c = db.cursor()
+        setdata = (id,)
+        c.execute('SELECT * FROM users WHERE id = ?', setdata)
+        ret = c.fetchone()
+    except Exception as e:
+        print('db error:', e)
+    finally:
+        db.close()
+    return ret                        
 
 def select_num(num):
     ret = ()
