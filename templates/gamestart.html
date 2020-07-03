@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <body>
-<h2>게임을 시작</h2>
-{{ data.name }}님 반갑습니다. (HP {{ data.hp }})로 게임을 시작 합니다.<br>
-길을 가다가 퉁퉁이를 만났습니다.<br>
-<a href={{ url_for('input_num', num=1) }}>1. 싸운다 </a> <br>
-<a href={{ url_for('input_num', num=2) }}>2. 토낀다 </a>
+<h1>복권상점</h1>
+<marquee direction=up width=180 height=70 bgcolor="yellow"><font color="red">{{ data.name }}님 반갑습니다. 복권을 구매해주세요.</font></marquee><br>
+
+<h3><a href={{ url_for('input_num', num=1) }}>1번 복권 구매. </a></h3> <br><br>
+<h3><a href={{ url_for('input_num', num=2) }}>2번 복권 구매. </a></h3> <br><br>
+<h3><a href={{ url_for('input_num', num=3) }}>3번 복권 구매. </a></h3> <br><br>
+<h3><a href={{ url_for('input_num', num=4) }}>4번 복권 구매. </a></h3> <br><br>
+<h3><a href={{ url_for('input_num', num=5) }}>5번 복권 구매. </a></h3>
+
 </body>
 </html>

@@ -22,30 +22,20 @@ def hellovar(name):
     character = game.set_charact(name)
     return render_template("gamestart.html", data=character)
 
-@app.route('/gamestart') 
-def gamestart():
-    with open("static/save.txt", "r", encoding='utf-8') as f:
-        data = f.read()
-        character = json.loads(data)
-        print(character['items'])
-    return "{} 이 {} 아이템을 사용해서 이겼다.".format(character["name"], character["items"][0])
-
 @app.route('/input/<int:num>') 
 def input_num(num): 
     if num == 1:
-        with open("static/save.txt", "r", encoding='utf-8') as f:
-            data = f.read()
-            character = json.loads(data)
-            print(character['items'])
-        return "{} 이 {} 아이템을 사용해서 이겼다.".format(character["name"], character["items"][0])
+        return "꽝입니다."
     elif num == 2:
-        return "튐"
+        return render_template("image.html")
     elif num == 3:
-        return "퉁퉁이"
+        return "꽝입니다"
+    elif num == 4:
+        return "꽝입니다"
+    elif num == 5:
+        return "꽝입니다"        
     else:
-        return "nothing"    
-    
-    #return 'Hello, {}!'.format(name)    
+        return "nothing"         
 
 # login
 @app.route('/login', methods=['GET','POST']) 
